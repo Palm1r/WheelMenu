@@ -15,7 +15,11 @@ qt_add_executable(appWheelMenu
 qt_add_qml_module(appWheelMenu
     URI WheelMenu
     VERSION 1.0
-    QML_FILES main.qml
+    QML_FILES
+    main.qml
+    SOURCES
+    wheelMenuModel.h
+    wheelMenuModel.cpp
 )
 
 set_target_properties(appWheelMenu PROPERTIES
