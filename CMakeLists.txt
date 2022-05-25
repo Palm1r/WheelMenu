@@ -17,6 +17,7 @@ qt_add_qml_module(appWheelMenu
     VERSION 1.0
     QML_FILES
     main.qml
+    WheelMenuButton.qml
     SOURCES
     wheelMenuModel.h
     wheelMenuModel.cpp
