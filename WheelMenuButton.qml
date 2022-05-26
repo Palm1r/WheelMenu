@@ -5,7 +5,9 @@ MouseArea {
 
     property alias buttonIconColor: buttonIcon.color
 
-    property bool isActivate
+    property bool activate: false
+
+    onClicked: activate = !activate
 
     Rectangle {
         id: background
@@ -28,7 +30,7 @@ MouseArea {
     states: [
         State {
             name: "default"
-            when: !isActivate && !root.containsPress
+            when: !activate && !root.containsPress
 
             PropertyChanges {
                 target: background
@@ -37,7 +39,7 @@ MouseArea {
         },
         State {
             name: "activated"
-            when: isActivate && !root.containsPress
+            when: activate && !root.containsPress
 
             PropertyChanges {
                 target: background
