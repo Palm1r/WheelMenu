@@ -5,9 +5,9 @@ namespace model {
 WheelMenuModel::WheelMenuModel(QObject *parent)
     : QAbstractListModel{parent}
 {
-    addMenuItem({"red", "red"});
-    addMenuItem({"orange", "orange"});
-    addMenuItem({"yellow", "yellow"});
+    addMenuItem({"red", "red", {1, 2, 3}});
+    addMenuItem({"orange", "orange", {4, 5, 6, 7, 8, 9}});
+    addMenuItem({"yellow", "yellow", {7, 8, 9, 0}});
     addMenuItem({"green", "green"});
     addMenuItem({"cyan", "cyan"});
     addMenuItem({"blue", "blue"});

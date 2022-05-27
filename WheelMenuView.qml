@@ -14,10 +14,11 @@ Item {
     Behavior on scaleProgress { NumberAnimation {duration: 350}}
 
     property real pathRadius: width / 2 + itemHeight / 2
-
     property int itemHeight: width / 2
-
     property int itemWidth: pathRlength / path.pathItemCount
+
+    signal openFullGridView(var internalModel)
+    signal openOneItem()
 
     height: width
     transform: Scale {
@@ -112,6 +113,8 @@ Item {
                     activate: index === viewModel.lastActiveIndex
 
                     onClicked: {
+                        root.activate = false
+                        openFullGridView(menuItemInternalList)
                         viewModel.lastActiveIndex = index
                     }
                 }
