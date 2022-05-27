@@ -25,6 +25,9 @@ MouseArea {
         anchors.centerIn: parent
         width: parent.width / 2
         height: width
+        radius: 4
+        border.width: 2
+        border.color: "white"
     }
 
     states: [

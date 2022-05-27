@@ -1,7 +1,7 @@
 import QtQuick
 import QtQuick.Controls
 
-Item {
+Rectangle {
     id: root
 
     property bool activate: true//false
@@ -10,17 +10,50 @@ Item {
     property real pathRlength: 2 * Math.PI * pathRadius / 4
     property int menuEdgeSize
     property int menuItemSize: menuEdgeSize / 3
-    property real pathRadius: menuEdgeSize
 
     Behavior on scaleProgress { NumberAnimation {duration: 350}}
 
-    width: parent.width / 2
+    property real pathRadius: width / 2 + itemHeight / 2
+
+    property int itemHeight: width / 2
+
+    property int itemWidth: pathRlength / path.pathItemCount
+
+    color: "transparent"
     height: width
     transform: Scale {
         origin.x: 0
         origin.y: height
         xScale: scaleProgress
         yScale: scaleProgress
+    }
+
+    // first line background
+    Rectangle {
+        anchors {
+            horizontalCenter: parent.left
+            verticalCenter: parent.bottom
+        }
+        width: 2 * pathRadius - itemWidth / 2
+        height: width
+        radius: width / 2
+        color: "transparent"
+        border.width: itemWidth
+        border.color: "lightblue"
+    }
+
+    // second line background
+    Rectangle {
+        anchors {
+            horizontalCenter: parent.left
+            verticalCenter: parent.bottom
+        }
+        width: 2 * pathRadius + 50
+        height: width
+        radius: width / 2
+        color: "transparent"
+        border.width: 40
+        border.color: "lightblue"
     }
 
     PathView {
@@ -33,24 +66,24 @@ Item {
 
         path: Path {
             startX: 0 - menuItemSize / 2
-            startY: 0
+            startY: height - pathRadius
 
             PathLine {
                 x: 0
-                y: 0
+                y: height - pathRadius
             }
 
             PathAttribute { name: "itemRotation"; value: 0}
             PathArc {
-                x: root.width
-                y: root.height
+                x: pathRadius
+                y: height
                 radiusX: pathRadius
                 radiusY: pathRadius
             }
             PathAttribute { name: "itemRotation"; value: 90}
             PathLine {
-                x: root.width
-                y: root.height + menuItemSize / 2
+                x: pathRadius
+                y: height + menuItemSize / 2
             }
             PathAttribute { name: "itemRotation"; value: 90}
 
@@ -61,19 +94,30 @@ Item {
 
             property real itemRotation: PathView.itemRotation
             rotation: PathView.itemRotation
-            color: "blue"
-            width: pathRlength / path.pathItemCount
-            height: width / 2
+            color: "transparent"
+            width: itemWidth
+            height: root.itemHeight
 
-            WheelMenuButton {
-                anchors.centerIn: parent
-                width: parent.width / 2
+            Item {
+                id: menubutton
+                anchors.bottom: parent.bottom
+                width: parent.width
                 height: width
-                buttonIconColor: menuItemColor
+
+                WheelMenuButton {
+                    anchors.centerIn: parent
+                    width: parent.width / 2
+                    height: root.itemHeight
+                    buttonIconColor: menuItemColor
+                }
             }
 
             Text {
-                anchors.horizontalCenter: parent.horizontalCenter
+                anchors {
+                    bottom: menubutton.top
+                    bottomMargin: 35
+                    horizontalCenter: parent.horizontalCenter
+                }
                 text: menuItemName
             }
         }

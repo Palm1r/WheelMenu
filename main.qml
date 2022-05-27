@@ -22,8 +22,26 @@ Window {
             bottom: parent.bottom
             left: parent.left
         }
+        width: parent.width
         viewModel: menuModel
         menuEdgeSize: window.width / 2
+    }
+
+    Rectangle {
+        id: opacityRamp
+
+        anchors {
+            bottom: buttonPanel.top
+        }
+
+        width: parent.width
+        height: 20
+        color: "red"
+
+        gradient: Gradient {
+            GradientStop { position: 0.1; color: "transparent"}
+            GradientStop { position: 0.9; color: "white" }
+        }
     }
 
     Rectangle {
