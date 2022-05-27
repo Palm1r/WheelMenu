@@ -16,6 +16,9 @@ struct MenuItem
 class WheelMenuModel : public QAbstractListModel
 {
     Q_OBJECT
+
+    Q_PROPERTY(int lastActiveIndex MEMBER m_lastActiveIndex NOTIFY lastActiveIndexChanged)
+
     QML_ELEMENT
 public:
     using MenuItemPtr = std::unique_ptr<MenuItem>;
@@ -30,8 +33,12 @@ public:
 
     void addMenuItem(const MenuItem &item);
 
+signals:
+    void lastActiveIndexChanged();
+
 private:
     std::vector<MenuItemPtr> m_menuItems;
+    int m_lastActiveIndex;
 };
 } // namespace model
 

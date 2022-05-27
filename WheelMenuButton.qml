@@ -7,8 +7,6 @@ MouseArea {
 
     property bool activate: false
 
-    onClicked: activate = !activate
-
     Rectangle {
         id: background
 
@@ -56,7 +54,7 @@ MouseArea {
             PropertyChanges {
                 target: background
                 visible: true
-                opacity: 0.1
+                opacity: 0.2
             }
         }
     ]

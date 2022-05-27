@@ -1,7 +1,7 @@
 import QtQuick
 import QtQuick.Controls
 
-Rectangle {
+Item {
     id: root
 
     property bool activate: true//false
@@ -19,7 +19,6 @@ Rectangle {
 
     property int itemWidth: pathRlength / path.pathItemCount
 
-    color: "transparent"
     height: width
     transform: Scale {
         origin.x: 0
@@ -93,6 +92,7 @@ Rectangle {
             id: menuDelegate
 
             property real itemRotation: PathView.itemRotation
+
             rotation: PathView.itemRotation
             color: "transparent"
             width: itemWidth
@@ -109,6 +109,11 @@ Rectangle {
                     width: parent.width / 2
                     height: root.itemHeight
                     buttonIconColor: menuItemColor
+                    activate: index === viewModel.lastActiveIndex
+
+                    onClicked: {
+                        viewModel.lastActiveIndex = index
+                    }
                 }
             }
 
