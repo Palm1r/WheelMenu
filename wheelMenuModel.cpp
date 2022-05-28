@@ -4,6 +4,7 @@ namespace model {
 
 WheelMenuModel::WheelMenuModel(QObject *parent)
     : QAbstractListModel{parent}
+    , m_innerRowIndex(-1)
 {
     addMenuItem({"red", "red", {1, 2, 3}});
     addMenuItem({"orange", "orange", {4, 5, 6, 7, 8, 9}});
@@ -31,10 +32,12 @@ QVariant WheelMenuModel::data(const QModelIndex &index, int role) const
 
     const auto &menuItem = m_menuItems.at(index.row());
     switch (role) {
-    case MenuItemNameRole:
+    case NameRole:
         return menuItem->m_name;
     case ColorRole:
         return menuItem->m_color;
+    case OuterRowIndexRole:
+        return menuItem->m_outerRowIndex;
     case ListRole:
         return menuItem->m_internalList;
     default:
@@ -42,11 +45,30 @@ QVariant WheelMenuModel::data(const QModelIndex &index, int role) const
     }
 }
 
+bool WheelMenuModel::setData(const QModelIndex &index, const QVariant &value, int role)
+{
+    if (data(index, role) != value) {
+        const auto &menuItem = m_menuItems.at(index.row());
+        qDebug() << "set data" << role;
+        switch (role) {
+        case OuterRowIndexRole:
+            menuItem->m_outerRowIndex = value.toInt();
+            break;
+        default:
+            qDebug() << "role no support for change";
+        }
+        emit dataChanged(index, index, {role});
+        return true;
+    }
+    return false;
+}
+
 QHash<int, QByteArray> WheelMenuModel::roleNames() const
 {
     QHash<int, QByteArray> roles = QAbstractListModel::roleNames();
-    roles[MenuItemNameRole] = "menuItemName";
+    roles[NameRole] = "menuItemName";
     roles[ColorRole] = "menuItemColor";
+    roles[OuterRowIndexRole] = "outerRowIndex";
     roles[ListRole] = "menuItemInternalList";
 
     return roles;
