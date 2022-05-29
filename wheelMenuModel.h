@@ -6,18 +6,12 @@
 #include <QtQml>
 
 namespace model {
-class ListItem
+struct ListItem
 {
     Q_GADGET
 
     Q_PROPERTY(QString color MEMBER m_color CONSTANT)
 public:
-    ListItem(const QString &color = "")
-        : m_color(color)
-    {}
-    //    Q_INVOKABLE void setIndex(int index) { qDebug() << "set index" << index; };
-
-private:
     QString m_color;
 };
 
@@ -49,7 +43,7 @@ public:
     bool setData(const QModelIndex &index, const QVariant &value, int role = Qt::EditRole) override;
     QHash<int, QByteArray> roleNames() const override;
 
-    void addMenuItem(const MenuItem &item);
+    void addMenuItem(MenuItem &&item);
 
 signals:
     void innerRowIndexChanged();
