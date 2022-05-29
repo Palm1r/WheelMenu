@@ -17,13 +17,13 @@ qt_add_qml_module(appWheelMenu
     VERSION 1.0
     QML_FILES
     main.qml
-    WheelMenuButton.qml
-    WheelMenuView.qml
-    GridPage.qml
-    OnlyItemPage.qml
+    qml/WheelMenuButton.qml
+    qml/WheelMenuView.qml
+    qml/GridPage.qml
+    qml/OnlyItemPage.qml
     SOURCES
-    wheelMenuModel.h
-    wheelMenuModel.cpp
+    src/wheelMenuModel.h
+    src/wheelMenuModel.cpp
 )
 
 set_target_properties(appWheelMenu PROPERTIES
@@ -34,6 +34,7 @@ set_target_properties(appWheelMenu PROPERTIES
     WIN32_EXECUTABLE TRUE
 )
 
+target_include_directories(appWheelMenu PRIVATE src)
 target_compile_definitions(appWheelMenu
     PRIVATE $<$<OR:$<CONFIG:Debug>,$<CONFIG:RelWithDebInfo>>:QT_QML_DEBUG>)
 target_link_libraries(appWheelMenu

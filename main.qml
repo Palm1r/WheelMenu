@@ -39,13 +39,13 @@ Window {
         gridPageLoader: gridPageLoader
 
         onOpenFullGridView: (outerRowList, index) => {
-                                gridPageLoader.setSource("GridPage.qml",
+                                gridPageLoader.setSource("qml/GridPage.qml",
                                                          {"outerRowList": outerRowList,
                                                              "innerRowIndex": index})
                                 oneItemPageLoader.source = ""
                             }
         onOpenOneItem: (outerItem, index) => {
-                           oneItemPageLoader.setSource("OnlyItemPage.qml",
+                           oneItemPageLoader.setSource("qml/OnlyItemPage.qml",
                                                     {"outerItem": outerItem,
                                                         "outerIndex": index})
                            gridPageLoader.source = ""
