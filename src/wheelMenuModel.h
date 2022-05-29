@@ -6,23 +6,28 @@
 #include <QtQml>
 
 namespace model {
+
+//item for one and grid pages with content
 struct ListItem
 {
     Q_GADGET
 
     Q_PROPERTY(QString color MEMBER m_color CONSTANT)
 public:
-    QString m_color;
+    QString m_color; //  instead any content
 };
 
+// inner row item with icon
 struct MenuItem
 {
     QString m_name;
-    QString m_color;
+    QString m_color; // instead any icon
+    //for further optimization, we can replace the QList<> to another one abstract list model and mapping data between theirs
     QList<ListItem> m_internalList;
     int m_outerRowIndex = 0;
 };
 
+// data model for Menu Item
 class WheelMenuModel : public QAbstractListModel
 {
     Q_OBJECT
@@ -35,6 +40,7 @@ public:
 
     enum Roles { NameRole = Qt::UserRole, ColorRole, ListRole, OuterRowIndexRole };
 
+    // override default function
     explicit WheelMenuModel(QObject *parent = nullptr);
     ~WheelMenuModel() = default;
 
