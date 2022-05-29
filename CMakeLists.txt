@@ -6,7 +6,7 @@ set(CMAKE_AUTOMOC ON)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_STANDARD 17)
 
-find_package(Qt6 6.2 COMPONENTS Quick Core REQUIRED)
+find_package(Qt6 6.2 COMPONENTS Quick Core Core5Compat REQUIRED)
 
 qt_add_executable(appWheelMenu
     main.cpp
@@ -34,8 +34,9 @@ set_target_properties(appWheelMenu PROPERTIES
     WIN32_EXECUTABLE TRUE
 )
 
-target_include_directories(appWheelMenu PRIVATE src)
+target_include_directories(appWheelMenu PRIVATE src qml)
+
 target_compile_definitions(appWheelMenu
     PRIVATE $<$<OR:$<CONFIG:Debug>,$<CONFIG:RelWithDebInfo>>:QT_QML_DEBUG>)
 target_link_libraries(appWheelMenu
-    PRIVATE Qt6::Quick Qt6::Core)
+    PRIVATE Qt6::Quick Qt6::Core Qt6::Core5Compat)

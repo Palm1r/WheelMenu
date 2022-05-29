@@ -1,10 +1,10 @@
 import QtQuick
 import WheelMenu
 import QtQuick.Controls
+import Qt5Compat.GraphicalEffects
 
 Window {
     id: window
-
 
     width: 720
     height: 900
@@ -15,16 +15,28 @@ Window {
         id: menuModel
     }
 
-    Loader {
-        id: gridPageLoader
+    Rectangle {
+        id: blur
 
         anchors.fill: parent
+
+        Loader {
+            id: gridPageLoader
+
+            anchors.fill: parent
+        }
+
+        Loader {
+            id: oneItemPageLoader
+
+            anchors.fill: parent
+        }
     }
 
-    Loader {
-        id: oneItemPageLoader
-
-        anchors.fill: parent
+    FastBlur  {
+        anchors.fill: blur
+        source: blur
+        radius: menuView.activate ? 32 : 0
     }
 
     WheelMenuView {
