@@ -11,18 +11,8 @@ Item {
         margins: 20
     }
 
-    Rectangle {
-        anchors {
-            fill: parent
-            margins: 20
-        }
+    TableButton {
         color: outerItem.color
-        radius: 4
-        border.width: 2
-    }
-
-    Text {
-        anchors.centerIn: parent
         text: outerIndex
     }
 }

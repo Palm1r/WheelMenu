@@ -30,7 +30,6 @@ MouseArea {
 
     states: [
         State {
-            name: "default"
             when: !activate && !root.containsPress
 
             PropertyChanges {
@@ -39,7 +38,6 @@ MouseArea {
             }
         },
         State {
-            name: "activated"
             when: activate && !root.containsPress
 
             PropertyChanges {
@@ -48,7 +46,6 @@ MouseArea {
             }
         },
         State {
-            name: "pressed"
             when: root.containsPress
 
             PropertyChanges {

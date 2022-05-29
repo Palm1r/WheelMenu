@@ -108,6 +108,7 @@ Item {
                 function onOuterRowIndexChanged(innerRowIndex, newOuterRowIndex) {
                     if (innerRowIndex === index) {
                         outerRowIndex = newOuterRowIndex;
+                        openOneItem(menuItemInternalList[outerRowIndex], outerRowIndex)
                     }
                 }
             }

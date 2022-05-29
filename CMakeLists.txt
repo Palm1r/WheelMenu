@@ -21,6 +21,7 @@ qt_add_qml_module(appWheelMenu
     qml/WheelMenuView.qml
     qml/GridPage.qml
     qml/OnlyItemPage.qml
+    qml/TableButton.qml
     SOURCES
     src/wheelMenuModel.h
     src/wheelMenuModel.cpp

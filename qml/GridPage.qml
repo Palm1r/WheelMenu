@@ -21,26 +21,10 @@ GridView {
         width: cellWidth
         height: width
 
-        Rectangle {
-            anchors {
-                fill: parent
-                margins: 20
-            }
+        TableButton {
             color: outerRowList[index].color
-            radius: 4
-            border.width: 2
-
-            MouseArea {
-                anchors.fill: parent
-                onClicked: {
-                    outerRowIndexChanged(innerRowIndex, index)
-                }
-            }
-        }
-
-        Text {
-            anchors.centerIn: parent
             text: index
+            onClicked: outerRowIndexChanged(innerRowIndex, index)
         }
     }
 }
