@@ -35,6 +35,7 @@ set_target_properties(appWheelMenu PROPERTIES
 )
 
 target_include_directories(appWheelMenu PRIVATE src qml)
+target_compile_definitions(appWheelMenu PUBLIC SAVE_PATH="${CMAKE_CURRENT_SOURCE_DIR}")
 
 target_compile_definitions(appWheelMenu
     PRIVATE $<$<OR:$<CONFIG:Debug>,$<CONFIG:RelWithDebInfo>>:QT_QML_DEBUG>)

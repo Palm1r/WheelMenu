@@ -51,6 +51,9 @@ public:
 
     void addMenuItem(MenuItem &&item);
 
+    // QObject interface
+protected:
+    void timerEvent(QTimerEvent *event) override;
 signals:
     void innerRowIndexChanged();
 
