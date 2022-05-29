@@ -7,6 +7,14 @@ MouseArea {
 
     property bool activate: false
 
+    hoverEnabled: true
+    onHoveredChanged: {
+        if (containsMouse)
+            buttonIcon.border.width = 4
+        else
+            buttonIcon.border.width = 2
+    }
+
     Rectangle {
         id: background
 
@@ -30,6 +38,7 @@ MouseArea {
 
     states: [
         State {
+            name: "default"
             when: !activate && !root.containsPress
 
             PropertyChanges {
@@ -38,6 +47,7 @@ MouseArea {
             }
         },
         State {
+            name: "activated"
             when: activate && !root.containsPress
 
             PropertyChanges {
@@ -46,6 +56,7 @@ MouseArea {
             }
         },
         State {
+            name: "pressed"
             when: root.containsPress
 
             PropertyChanges {

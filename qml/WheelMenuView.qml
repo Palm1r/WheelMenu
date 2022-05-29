@@ -115,6 +115,7 @@ Item {
 
             Item {
                 id: menubutton
+
                 anchors.bottom: parent.bottom
                 width: parent.width
                 height: width
@@ -147,6 +148,8 @@ Item {
             }
 
             Rectangle {
+                id: outerRowButton
+
                 anchors {
                     top: parent.top
                 }
@@ -166,10 +169,18 @@ Item {
 
                 MouseArea{
                     anchors.fill: parent
+                    hoverEnabled: true
                     onClicked: {
                         root.activate = false
                         openOneItem(menuItemInternalList[outerRowIndex], outerRowIndex)
                     }
+                    onHoveredChanged: {
+                        if (containsMouse)
+                            outerRowButton.border.width = 4
+                        else
+                            outerRowButton.border.width = 2
+                    }
+
                 }
             }
         }
