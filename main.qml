@@ -15,14 +15,17 @@ Window {
         id: menuModel
     }
 
-//    SecondaryPage {
-//    }
+    Loader {
+        id: gridPageLoader
 
-////    Loader {
-////        anchors.fill: parent
+        anchors.fill: parent
+    }
 
-////        sourceComponent:
-////    }
+    Loader {
+        id: oneItemPageLoader
+
+        anchors.fill: parent
+    }
 
     WheelMenuView {
         id: menuView
@@ -31,13 +34,22 @@ Window {
             bottom: parent.bottom
             left: parent.left
         }
-        width: parent.width
         viewModel: menuModel
         menuEdgeSize: window.width / 2
+        gridPageLoader: gridPageLoader
 
-        onOpenFullGridView: {
-            console.log(internalModel)
-        }
+        onOpenFullGridView: (outerRowList, index) => {
+                                gridPageLoader.setSource("GridPage.qml",
+                                                         {"outerRowList": outerRowList,
+                                                             "innerRowIndex": index})
+                                oneItemPageLoader.source = ""
+                            }
+        onOpenOneItem: (outerItem, index) => {
+                           oneItemPageLoader.setSource("OnlyItemPage.qml",
+                                                    {"outerItem": outerItem,
+                                                        "outerIndex": index})
+                           gridPageLoader.source = ""
+                       }
     }
 
     Rectangle {

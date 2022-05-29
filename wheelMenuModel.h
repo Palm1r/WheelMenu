@@ -6,11 +6,26 @@
 #include <QtQml>
 
 namespace model {
+class ListItem
+{
+    Q_GADGET
+
+    Q_PROPERTY(QString color MEMBER m_color CONSTANT)
+public:
+    ListItem(const QString &color = "")
+        : m_color(color)
+    {}
+    //    Q_INVOKABLE void setIndex(int index) { qDebug() << "set index" << index; };
+
+private:
+    QString m_color;
+};
+
 struct MenuItem
 {
     QString m_name;
     QString m_color;
-    QList<QVariant> m_internalList = QVariantList();
+    QList<ListItem> m_internalList;
     int m_outerRowIndex = 0;
 };
 
@@ -45,4 +60,5 @@ private:
 };
 } // namespace model
 
+Q_DECLARE_METATYPE(model::ListItem)
 #endif // WHEELMENUMODEL_H

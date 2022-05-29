@@ -19,7 +19,8 @@ qt_add_qml_module(appWheelMenu
     main.qml
     WheelMenuButton.qml
     WheelMenuView.qml
-    SecondaryPage.qml
+    GridPage.qml
+    OnlyItemPage.qml
     SOURCES
     wheelMenuModel.h
     wheelMenuModel.cpp

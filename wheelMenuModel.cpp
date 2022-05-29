@@ -6,9 +6,9 @@ WheelMenuModel::WheelMenuModel(QObject *parent)
     : QAbstractListModel{parent}
     , m_innerRowIndex(-1)
 {
-    addMenuItem({"red", "red", {1, 2, 3}});
-    addMenuItem({"orange", "orange", {4, 5, 6, 7, 8, 9}});
-    addMenuItem({"yellow", "yellow", {7, 8, 9, 0}});
+    addMenuItem({"red", "red", {ListItem("red"), ListItem("red"), ListItem("red")}});
+    addMenuItem({"orange", "orange", {ListItem("orange"), ListItem("orange")}});
+    addMenuItem({"yellow", "yellow"});
     addMenuItem({"green", "green"});
     addMenuItem({"cyan", "cyan"});
     addMenuItem({"blue", "blue"});
@@ -39,7 +39,7 @@ QVariant WheelMenuModel::data(const QModelIndex &index, int role) const
     case OuterRowIndexRole:
         return menuItem->m_outerRowIndex;
     case ListRole:
-        return menuItem->m_internalList;
+        return QVariant::fromValue(menuItem->m_internalList);
     default:
         return QVariant();
     }

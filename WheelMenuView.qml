@@ -17,10 +17,15 @@ Item {
     property int itemHeight: width / 2
     property int itemWidth: pathRlength / path.pathItemCount
 
-    signal openFullGridView(var internalModel)
-    signal openOneItem()
+    property var gridPageLoader
 
+    signal openFullGridView(outerRowList: var, innerRowIndex: int)
+    signal openOneItem(outerItem: var, index: int)
+
+    width: parent.width
     height: width
+    visible: scaleProgress !== 0.0
+
     transform: Scale {
         origin.x: 0
         origin.y: height
@@ -68,36 +73,44 @@ Item {
             startX: 0 - menuItemSize / 2
             startY: height - pathRadius
 
+            PathAttribute { name: "centerRotation"; value: 0}
             PathLine {
                 x: 0
                 y: height - pathRadius
             }
 
-            PathAttribute { name: "itemRotation"; value: 0}
+            PathAttribute { name: "centerRotation"; value: 0}
             PathArc {
                 x: pathRadius
                 y: height
                 radiusX: pathRadius
                 radiusY: pathRadius
             }
-            PathAttribute { name: "itemRotation"; value: 90}
+            PathAttribute { name: "centerRotation"; value: 90}
             PathLine {
                 x: pathRadius
                 y: height + menuItemSize / 2
             }
-            PathAttribute { name: "itemRotation"; value: 90}
-
+            PathAttribute { name: "centerRotation"; value: 90}
         }
 
-        delegate: Rectangle {
+        delegate: Item {
             id: menuDelegate
 
-            property real itemRotation: PathView.itemRotation
+            property real zeroRotation: 0 - PathView.centerRotation
 
-            rotation: PathView.itemRotation
-            color: "transparent"
+            rotation: PathView.centerRotation
             width: itemWidth
             height: root.itemHeight
+
+            Connections {
+                target: gridPageLoader.item
+                function onOuterRowIndexChanged(innerRowIndex, newOuterRowIndex) {
+                    if (innerRowIndex === index) {
+                        outerRowIndex = newOuterRowIndex;
+                    }
+                }
+            }
 
             Item {
                 id: menubutton
@@ -106,16 +119,19 @@ Item {
                 height: width
 
                 WheelMenuButton {
+                    property int currentIndex
+
                     anchors.centerIn: parent
                     width: parent.width / 2
-                    height: root.itemHeight
+                    height: width
                     buttonIconColor: menuItemColor
-                    activate: index === viewModel.lastActiveIndex
+                    activate: index === viewModel.innerRowIndex
+                    rotation: menuDelegate.zeroRotation
 
                     onClicked: {
                         root.activate = false
-                        openFullGridView(menuItemInternalList)
-                        viewModel.lastActiveIndex = index
+                        viewModel.innerRowIndex = index
+                        openFullGridView(menuItemInternalList, index)
                     }
                 }
             }
@@ -127,6 +143,33 @@ Item {
                     horizontalCenter: parent.horizontalCenter
                 }
                 text: menuItemName
+            }
+
+            Rectangle {
+                anchors {
+                    top: parent.top
+                }
+
+                width: parent.width / 2
+                height: width
+                color: menuItemColor
+                radius: 4
+                rotation: menuDelegate.zeroRotation
+                border.width: 2
+                border.color: "black"
+
+                Text {
+                    anchors.centerIn: parent
+                    text: outerRowIndex
+                }
+
+                MouseArea{
+                    anchors.fill: parent
+                    onClicked: {
+                        root.activate = false
+                        openOneItem(menuItemInternalList[outerRowIndex], outerRowIndex)
+                    }
+                }
             }
         }
     }
