@@ -37,6 +37,13 @@ Window {
         anchors.fill: blur
         source: blur
         radius: menuView.activate ? 32 : 0
+
+        // event blocker
+        MouseArea {
+            anchors.fill: parent
+            enabled: menuView.activate
+            hoverEnabled: menuView.activate
+        }
     }
 
     WheelMenuView {
