@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<wheelMenuConfig innerRowIndex="2">
+<wheelMenuConfig innerRowIndex="3">
     <MenuItems>
         <name>name-red</name>
         <icon>red</icon>
@@ -12,11 +12,13 @@
             <icon>red</icon>
             <icon>red</icon>
             <icon>red</icon>
+            <icon>red</icon>
         </ListItems>
         <name>name-orange</name>
         <icon>orange</icon>
-        <index>4</index>
+        <index>0</index>
         <ListItems>
+            <icon>orange</icon>
             <icon>orange</icon>
             <icon>orange</icon>
             <icon>orange</icon>
@@ -37,11 +39,8 @@
         </ListItems>
         <name>name-green</name>
         <icon>green</icon>
-        <index>0</index>
+        <index>6</index>
         <ListItems>
-            <icon>green</icon>
-            <icon>green</icon>
-            <icon>green</icon>
             <icon>green</icon>
             <icon>green</icon>
             <icon>green</icon>
@@ -59,20 +58,11 @@
             <icon>cyan</icon>
             <icon>cyan</icon>
             <icon>cyan</icon>
-            <icon>cyan</icon>
-            <icon>cyan</icon>
-            <icon>cyan</icon>
-            <icon>cyan</icon>
-            <icon>cyan</icon>
-            <icon>cyan</icon>
         </ListItems>
         <name>name-blue</name>
         <icon>blue</icon>
         <index>0</index>
         <ListItems>
-            <icon>blue</icon>
-            <icon>blue</icon>
-            <icon>blue</icon>
             <icon>blue</icon>
             <icon>blue</icon>
             <icon>blue</icon>
