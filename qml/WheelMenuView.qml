@@ -33,34 +33,6 @@ Item {
         yScale: scaleProgress
     }
 
-    // first line background
-    Rectangle {
-        anchors {
-            horizontalCenter: parent.left
-            verticalCenter: parent.bottom
-        }
-        width: 2 * pathRadius - itemWidth / 2
-        height: width
-        radius: width / 2
-        color: "transparent"
-        border.width: itemWidth
-        border.color: "lightblue"
-    }
-
-    // second line background
-    Rectangle {
-        anchors {
-            horizontalCenter: parent.left
-            verticalCenter: parent.bottom
-        }
-        width: 2 * pathRadius + 50
-        height: width
-        radius: width / 2
-        color: "transparent"
-        border.width: 40
-        border.color: "lightblue"
-    }
-
     PathView {
         id: path
 
@@ -139,9 +111,11 @@ Item {
             }
 
             Text {
+                id: innerRowName
+
                 anchors {
                     bottom: menubutton.top
-                    bottomMargin: 35
+                    bottomMargin: pathRadius / 10
                     horizontalCenter: parent.horizontalCenter
                 }
                 text: menuItemName
@@ -183,6 +157,32 @@ Item {
 
                 }
             }
+        }
+
+        Rectangle {
+            anchors {
+                horizontalCenter: parent.left
+                verticalCenter: parent.bottom
+            }
+            width: 2 * (pathRadius - itemWidth / 4)
+            height: width
+            radius: width / 2
+            color: "transparent"
+            border.width: itemWidth
+            border.color: "lightblue"
+        }
+
+        Rectangle {
+            anchors {
+                horizontalCenter: parent.left
+                verticalCenter: parent.bottom
+            }
+            width: 2 * (pathRadius + pathRadius / 10)
+            height: width
+            radius: width / 2
+            color: "transparent"
+            border.width: pathRadius / 10
+            border.color: "lightblue"
         }
     }
 
