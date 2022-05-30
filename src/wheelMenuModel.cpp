@@ -1,18 +1,17 @@
 #include "wheelMenuModel.h"
 
+#include "fileSaver.h"
 #include <QRandomGenerator>
-#include <QXmlStreamWriter>
 
 namespace model {
-
-const QString &Path = QString("%1/conf.xml").arg(SAVE_PATH);
 
 WheelMenuModel::WheelMenuModel(QObject *parent)
     : QAbstractListModel{parent}
     , m_innerRowIndex(-1)
+    , m_saveThread(new QThread(this))
+    , m_saveWorker(new FileSaver())
+    , m_configSaveTimer(new QTimer(this))
 {
-    startTimer(5000);
-
     auto menuItemFactory = [](const QString &name, const QString &color) {
         QList<ListItem> listItems;
         int rand = QRandomGenerator::global()->bounded(3, 12);
@@ -29,6 +28,27 @@ WheelMenuModel::WheelMenuModel(QObject *parent)
     addMenuItem(std::move(menuItemFactory("name-cyan", "cyan")));
     addMenuItem(std::move(menuItemFactory("name-blue", "blue")));
     addMenuItem(std::move(menuItemFactory("name-violet", "violet")));
+
+    m_saveWorker->moveToThread(m_saveThread);
+    connect(this,
+            &WheelMenuModel::startSaveConfig,
+            m_saveWorker,
+            &FileSaver::saveConfig,
+            Qt::QueuedConnection);
+
+    connect(m_configSaveTimer, &QTimer::timeout, this, [this] {
+        std::pair<std::vector<MenuItemPtr> *, int> modelData{&m_menuItems, m_innerRowIndex};
+        m_saveWorker->copyData(modelData);
+        emit startSaveConfig();
+    });
+
+    m_saveThread->start();
+    m_configSaveTimer->start(5000);
+}
+
+WheelMenuModel::~WheelMenuModel()
+{
+    m_saveThread->quit();
 }
 
 int WheelMenuModel::rowCount(const QModelIndex &parent) const
@@ -99,49 +119,17 @@ void WheelMenuModel::addMenuItem(MenuItem &&item)
     endInsertRows();
 }
 
-void WheelMenuModel::timerEvent(QTimerEvent *event)
+int WheelMenuModel::innerRowIndex() const
 {
-    std::vector<MenuItemPtr> menuItemsCopy;
-    menuItemsCopy.reserve(m_menuItems.size());
-
-    int innerRowIndexCopy = m_innerRowIndex;
-
-    std::transform(m_menuItems.begin(),
-                   m_menuItems.end(),
-                   std::back_inserter(menuItemsCopy),
-                   [](const auto &menuItem) {
-                       return std::unique_ptr<MenuItem>(new MenuItem(*menuItem));
-                   });
-
-    std::thread save_thread([&menuItemsCopy, innerRowIndexCopy]() {
-        QFile file(Path);
-
-        if (file.open(QIODevice::WriteOnly | QIODevice::Text)) {
-            QXmlStreamWriter xmlWriter(&file);
-            xmlWriter.setAutoFormatting(true);
-            xmlWriter.writeStartDocument();
-            xmlWriter.writeStartElement("wheelMenuConfig");
-            xmlWriter.writeAttribute("innerRowIndex", QString("%1").arg(innerRowIndexCopy));
-            xmlWriter.writeStartElement("MenuItems");
-            for (const auto &menuItem : menuItemsCopy) {
-                xmlWriter.writeTextElement("name", QString("%1").arg(menuItem->m_name));
-                xmlWriter.writeTextElement("icon", QString("%1").arg(menuItem->m_color));
-                xmlWriter.writeTextElement("index", QString("%1").arg(menuItem->m_outerRowIndex));
-                xmlWriter.writeStartElement("ListItems");
-                for (const auto &listItem : menuItem->m_internalList) {
-                    xmlWriter.writeTextElement("icon", QString("%1").arg(listItem.m_color));
-                }
-                xmlWriter.writeEndElement();
-            }
-            xmlWriter.writeEndElement();
-
-            xmlWriter.writeEndElement();
-            xmlWriter.writeEndDocument();
-            file.close();
-        } else {
-            qDebug() << "error to write";
-        }
-    });
-    save_thread.join();
+    return m_innerRowIndex;
 }
+
+void WheelMenuModel::setInnerRowIndex(int newInnerRowIndex)
+{
+    if (m_innerRowIndex == newInnerRowIndex)
+        return;
+    m_innerRowIndex = newInnerRowIndex;
+    emit innerRowIndexChanged();
+}
+
 } // namespace model

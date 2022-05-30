@@ -25,6 +25,8 @@ qt_add_qml_module(appWheelMenu
     SOURCES
     src/wheelMenuModel.h
     src/wheelMenuModel.cpp
+    src/fileSaver.h
+    src/fileSaver.cpp
 )
 
 set_target_properties(appWheelMenu PROPERTIES

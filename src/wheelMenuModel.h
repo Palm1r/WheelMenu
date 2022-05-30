@@ -5,6 +5,7 @@
 #include <QObject>
 #include <QtQml>
 
+class FileSaver;
 namespace model {
 
 //item for one and grid pages with content
@@ -32,7 +33,8 @@ class WheelMenuModel : public QAbstractListModel
 {
     Q_OBJECT
 
-    Q_PROPERTY(int innerRowIndex MEMBER m_innerRowIndex NOTIFY innerRowIndexChanged)
+    Q_PROPERTY(
+        int innerRowIndex READ innerRowIndex WRITE setInnerRowIndex NOTIFY innerRowIndexChanged)
 
     QML_ELEMENT
 public:
@@ -42,7 +44,7 @@ public:
 
     // override default function
     explicit WheelMenuModel(QObject *parent = nullptr);
-    ~WheelMenuModel() = default;
+    ~WheelMenuModel();
 
     int rowCount(const QModelIndex &parent) const override;
     QVariant data(const QModelIndex &index, int role) const override;
@@ -51,15 +53,19 @@ public:
 
     void addMenuItem(MenuItem &&item);
 
-    // QObject interface
-protected:
-    void timerEvent(QTimerEvent *event) override;
+    int innerRowIndex() const;
+    void setInnerRowIndex(int newInnerRowIndex);
+
 signals:
     void innerRowIndexChanged();
+    void startSaveConfig();
 
 private:
     std::vector<MenuItemPtr> m_menuItems;
     int m_innerRowIndex;
+    QThread *m_saveThread;
+    FileSaver *m_saveWorker;
+    QTimer *m_configSaveTimer;
 };
 } // namespace model
 
